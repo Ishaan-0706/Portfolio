@@ -1,2 +1,0 @@
-# Ishaan Parikh’s portfolio
-Recruiter-focused personal portfolio for an IIT Jodhpur undergraduate graduating in 2029, based in Udaipur. Show Kuberbolt and Oxnet with accurate individual contributions; invite hiring inquiries. Original experience posts and curated reading live together in Blog. No fabricated history, metrics, or articles. Supplied screenshots and shared System 1984 design document are visual authority. Next.js/React frontend, Express/Resend contact API. Résumé and external profile/project links pending. Phone stays private.

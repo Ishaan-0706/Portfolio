@@ -19,6 +19,12 @@ next-env.d.ts
 .impeccable/
 skills-lock.json
 
+# Local agent instructions and planning documents
+[Aa][Gg][Ee][Nn][Tt][Ss].[Mm][Dd]
+[Cc][Oo][Dd][Ee][Xx].[Mm][Dd]
+[Pp][Rr][Oo][Dd][Uu][Cc][Tt].[Mm][Dd]
+[Dd][Ee][Ss][Ii][Gg][Nn].[Mm][Dd]
+
 # Local content notes and original design exports
 /details.txt
 /stitch_ishaan_personal_portfolio_website*.zip

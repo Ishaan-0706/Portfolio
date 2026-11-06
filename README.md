@@ -1,25 +1,95 @@
-# Ishaan’s portfolio
+# Ishaan Parikh — Portfolio
 
-Next.js/React portfolio with an Express contact API. Requires Node 20.9+.
+A personal portfolio featuring projects, education, original articles, curated reading, and a contact form. Built with Next.js, React, TypeScript, and an Express API that sends email through Resend.
 
-## Local development
+## Project structure
 
-Run `npm install`, copy `apps/api/.env.example` to `apps/api/.env`, and set the Resend key, verified sender, and recipient. Run `npm run dev`, then visit http://localhost:3000. The API runs on port 4000. Without email configuration the site works, but form submissions report delivery unavailable.
+```text
+apps/
+├── web/                     Next.js frontend
+│   ├── app/                 Pages, layouts, and global styles
+│   ├── components/          Shared UI and interactive forms
+│   ├── content/posts/       Markdown/MDX articles and authoring guide
+│   ├── lib/                 Profile data, article loader, and tests
+│   ├── public/              Public assets
+│   └── .env.example         Frontend configuration template
+└── api/                     Express contact service
+    ├── src/
+    │   ├── app.ts           Routes, validation, and rate limiting
+    │   ├── app.test.ts      API tests
+    │   └── server.ts        Resend integration and server startup
+    └── .env.example         Server configuration template
+package.json                 Workspace scripts
+package-lock.json            Locked dependencies
+```
 
-`npm run build`, `npm run typecheck`, `npm test`, and `npm run lint` run workspace checks.
+Dependencies, build output, secrets, local agent tooling, planning documents, and original design exports are excluded from Git.
 
-## Deployment
+## Run locally
 
-Deploy the web workspace to Vercel with the repository root as the project root and the build command `npm run build -w apps/web`; select the Next.js framework and output `apps/web/.next` if needed for your monorepo settings. Set `API_URL` to the HTTPS Express service origin before building.
+Requires Node.js 20.9 or later and npm.
 
-Deploy the repository to a Node host with `npm ci`, `npm run build -w apps/api`, and `npm start -w apps/api`. Set `PORT` as required by the host, `FRONTEND_ORIGIN` to the public website origin, and all email variables from the API example. Keep API credentials out of frontend variables. Resend requires a verified sending domain; use the visitor’s address only as Reply-To.
+```bash
+npm ci
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env.local
+npm run dev
+```
 
-Contact rate limits use process memory. With multiple API replicas, use a shared rate-limit store. Configure proxy trust for the exact hosting topology before relying on forwarded client addresses; do not blindly trust arbitrary forwarding headers.
+Open http://localhost:3000. The API listens on port 4000; Next.js forwards `/api/contact` to it. Pages work without email credentials, but the contact form reports a delivery error until Resend is configured.
 
-No deployment has been published. Résumé, external project links, social profiles, and initial articles remain content tasks.
+## Configure contact email
 
-## Content
+Set these values in `apps/api/.env`:
 
-Edit `apps/web/lib/profile.ts` for profile/project copy. Add trusted `.md` or `.mdx` files under `apps/web/content/posts` with lowercase hyphenated filenames. Frontmatter requires quoted `title`, `description`, `date` (YYYY-MM-DD), and `category`. An optional `source` HTTP(S) URL makes an entry a curated external article; omit it for a local original article. MDX executes code: only add files you trust. Do not accept uploads as article content.
+| Variable | Purpose |
+| --- | --- |
+| `PORT` | API port; defaults to `4000` |
+| `FRONTEND_ORIGIN` | Frontend origin; locally `http://localhost:3000` |
+| `RESEND_API_KEY` | Private Resend sending key |
+| `CONTACT_FROM` | Sender address on your verified domain |
+| `CONTACT_TO` | Inbox receiving contact messages |
 
-The design sources are the supplied ZIPs and `DESIGN.md`. The initial implementation intentionally omits unavailable résumé/project/social links, newsletter signup, and fabricated articles or career history.
+For testing, `CONTACT_FROM=onboarding@resend.dev` can send only to the email associated with your Resend account. For production, verify your sending domain in Resend. Visitor email addresses are used as Reply-To, not as the sender.
+
+Keep credentials in the API environment. Never use a `NEXT_PUBLIC_` variable for a secret. Restart the apps after changing environment variables.
+
+## Update content
+
+- Edit `apps/web/lib/profile.ts` for projects, contact details, and social links.
+- Edit `apps/web/app/about/page.tsx` for biography, education, and milestones.
+- Add trusted `.md` or `.mdx` articles to `apps/web/content/posts/`. See its README for frontmatter and curated-link examples.
+- Store public images in `apps/web/public/`.
+
+MDX can execute server code. Only add trusted author content; do not accept article uploads from visitors.
+
+## Checks
+
+```bash
+npm run typecheck
+npm run lint
+npm test
+npm run build
+```
+
+Tests cover article metadata and source validation, contact validation, spam rejection, rate limiting, and delivery failures.
+
+## Deploy
+
+### Frontend: Vercel
+
+Import the GitHub repository, select **Next.js**, and set **Root Directory** to `apps/web`. Enable access to files outside that directory so npm can use the workspace lockfile. Use the default Next.js output settings. Set `API_URL` to the deployed Express service origin before building.
+
+### API: a Node.js host
+
+Deploy from the repository root with:
+
+```bash
+npm ci
+npm run build -w apps/api
+npm start -w apps/api
+```
+
+Use the install/build commands during deployment and the start command to run the service. Set the API environment variables on the host, with `FRONTEND_ORIGIN` pointing to the deployed website. `GET /health` is available for health checks.
+
+Rate limits are stored in process memory. Use a shared store before running multiple replicas. Configure Express proxy trust for the host’s actual proxy topology before relying on forwarded client IPs.
