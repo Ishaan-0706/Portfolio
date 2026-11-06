@@ -1,0 +1,33 @@
+# Dependencies and generated output
+node_modules/
+.next/
+dist/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Credentials and local environment files
+.env
+.env.*
+!.env.example
+
+# Local agent skills and tooling
+.agents/
+.codex/
+.grok/
+.impeccable/
+skills-lock.json
+
+# Local content notes and original design exports
+/details.txt
+/stitch_ishaan_personal_portfolio_website*.zip
+/file_000000004fe48208996b022fe04027d3.png
+
+# OS files and debug logs
+.DS_Store
+Thumbs.db
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
