@@ -5,3 +5,14 @@ export const projects = [
 ];
 
 export const socialLinks = [{ label: 'GitHub', href: 'https://github.com/Ishaan-0706' }, { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ishaan-parikh-490a0b380' }];
+
+export const stack = [
+  { name: 'Python', mark: 'PY', file: 'python.py', group: 'Languages' },
+  { name: 'Go', mark: 'GO', file: 'main.go', group: 'Languages' },
+  { name: 'Rust', mark: 'RS', file: 'rust.rs', group: 'Languages' },
+  { name: 'C++', mark: 'C++', file: 'main.cpp', group: 'Languages' },
+  { name: 'LangChain', mark: 'LC', file: 'langchain.py', group: 'Agent frameworks' },
+  { name: 'LangGraph', mark: 'LG', file: 'langgraph.py', group: 'Agent frameworks' },
+  { name: 'Nostr', mark: 'NS', file: 'nostr', group: 'Protocols' },
+  { name: 'Git', mark: 'GIT', file: '.git', group: 'Tools' },
+];
